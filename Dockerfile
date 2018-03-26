@@ -1,8 +1,9 @@
-FROM ubuntu:15.04
+FROM ubuntu:15.10
 MAINTAINER Paul Wellner Bou "<paul@wellnerbou.de>"
-
+RUN sed -i 's/archive.ubuntu/old-releases.ubuntu/' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
         vim less git-core python-dev python-pip libgit2-dev gawk libffi-dev npm net-tools
+RUN pip install --upgrade pip
 RUN pip install pygit2==0.22.1
 RUN pip install flask
 
@@ -27,5 +28,4 @@ WORKDIR /src
 
 EXPOSE 5000
 
-CMD ["git", "deps", "--serve", "--bind-ip=0.0.0.0"]
-
+CMD ["python", "/git-deps/git-deps.py", "--serve", "--bind-ip=0.0.0.0"]
